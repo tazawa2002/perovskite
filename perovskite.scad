@@ -138,20 +138,211 @@ module perovskite2(r_in,d_in){
     
 }
 
+module perovskite3(r_in,d_in){
+    // r:原子の半径
+    // d:原子間距離
+    r = r_in;
+    d = d_in;
+
+    // r_b:結合の棒の太さ
+    r_b =2*r/12;
+
+    // Br用の配列
+    CubePoints = [
+      [-d/2, 0, 0],  //0
+      [d/2, 0, 0],  //1
+      [0, -d/2, 0],  //2
+      [0, d/2, 0],  //3
+      [0,  0, -d/2],  //4
+      [0,  0, d/2]];  //5
+
+    CubeFaces = [
+        [0,5,2],
+        [2,5,1],
+        [1,5,3],
+        [3,5,0],
+        [0,4,3],
+        [3,4,1],
+        [1,4,2],
+        [2,4,0]
+    ];
+
+    // セシウム
+    color("#808080") translate([d/2,d/2,d/2]) sphere(r, $fs=0.01);
+    color("#808080") translate([d/2,d/2,d/2]) {
+        translate([-d,0,0]) sphere(r, $fs=0.01);
+        translate([0,-d,0]) sphere(r, $fs=0.01);
+        translate([0,0,-d]) sphere(r, $fs=0.01);
+        translate([-d,-d,0]) sphere(r, $fs=0.01);
+        translate([-d,0,-d]) sphere(r, $fs=0.01);
+        translate([0,-d,-d]) sphere(r, $fs=0.01);
+        translate([-d,-d,-d]) sphere(r, $fs=0.01);
+    }
+    
+    // 結合の棒    
+    color("#FFFFFF"){ // 棒の色を白にする
+        for(i=[0:3]){
+            translate([d/2,d/2,d/2]) rotate([0,0,90*i]) rotate(a=55, v=[1,-1,0]) cylinder(h=sqrt(3)*d, r=r_b, center=true, $fs=0.01);
+        }
+        for(i=[-1:2:1])translate([d/2,d/2,d/2]) rotate([0,0,45*i]) rotate([0,90,0]){
+            cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+        }
+        for(i=[-1:2:1])translate([d/2,d/2,d/2]) rotate([45*i,0,0]){
+            cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+        }
+        for(i=[-1:2:1])translate([d/2,d/2,d/2]) rotate([0,45*i,0]){
+            cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+        }
+    }
+    
+    color("#FFFFFF"){
+        translate([-d,0,0])
+        translate([d/2,d/2,d/2])
+        rotate([0,0,-90])
+        for(j=[[0,0,90],[0,0,-90],[180,90,0],[180,0,0]])
+        rotate(j) 
+        for(i=[-1:2:1])
+        rotate([45*i,0,0]){
+            rotate([0,0,0]) 
+            rotate([90,0,0]) 
+            difference(){
+                cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+            }
+        }
+        
+        translate([0,-d,0])
+        translate([d/2,d/2,d/2])
+        for(j=[[0,0,90],[0,0,-90],[180,90,0],[180,0,0]])
+        rotate(j) 
+        for(i=[-1:2:1])
+        rotate([45*i,0,0]){
+            rotate([0,0,0]) 
+            rotate([90,0,0]) 
+            difference(){
+                cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+            }
+        }
+        
+        translate([0,0,-d])
+        translate([d/2,d/2,d/2])
+        rotate([90,0,0])
+        for(j=[[0,0,90],[0,0,-90],[180,90,0],[180,0,0]])
+        rotate(j) 
+        for(i=[-1:2:1])
+        rotate([45*i,0,0]){
+            rotate([0,0,0]) 
+            rotate([90,0,0]) 
+            difference(){
+                cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+            }
+        }
+        
+        translate([-d,-d,0])
+        translate([d/2,d/2,d/2])
+        rotate([0,90,0]){
+            for(j=[[-90,0,90],[180,90,0]])
+            rotate(j) 
+            for(i=[-1:2:1])
+            rotate([45*i,0,0]){
+                rotate([0,0,0]) 
+                rotate([90,0,0]) 
+                difference(){
+                    cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                    translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+                }
+            }
+            rotate([-45,0,0])
+            difference(){
+                cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+            }
+        }
+        
+        translate([0,-d,-d])
+        translate([d/2,d/2,d/2])
+        rotate([0,0,0]){
+            for(j=[[-90,0,90],[180,90,0]])
+            rotate(j) 
+            for(i=[-1:2:1])
+            rotate([45*i,0,0]){
+                rotate([0,0,0]) 
+                rotate([90,0,0]) 
+                difference(){
+                    cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                    translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+                }
+            }
+            rotate([-45,0,0])
+            difference(){
+                cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+            }
+        }
+        
+        translate([-d,0,-d])
+        translate([d/2,d/2,d/2])
+        rotate([0,0,-90]){
+            for(j=[[-90,0,90],[180,90,0]])
+            rotate(j) 
+            for(i=[-1:2:1])
+            rotate([45*i,0,0]){
+                rotate([0,0,0]) 
+                rotate([90,0,0]) 
+                difference(){
+                    cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                    translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+                }
+            }
+            rotate([-45,0,0])
+            difference(){
+                cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+            }
+        }
+        
+        translate([-d,-d,-d])
+        translate([d/2,d/2,d/2])
+        for(i=[[0,0,0],[0,0,-90],[-45,0,-45]])
+        rotate(i){
+            rotate([-45,0,0])
+            difference(){
+                cylinder(h=sqrt(2)*d, r=r_b, center=true, $fs=0.01);
+                translate([-0.75*d,-0.75*d,-1.5*d]) cube(1.5*d);
+            }
+        }
+    }
+
+
+    for(i=[0:1])for(j=[0:1])for(k=[0:1])translate([i*d,j*d,k*d]){
+        // パラジウム
+        color("#FF6347") for(i=[0:1]){
+            translate([i*d-d/2,0,0]) sphere(r, $fs=0.01);
+            translate([0,i*d-d/2,0]) sphere(r, $fs=0.01);
+            translate([0,0,i*d-d/2]) sphere(r, $fs=0.01);
+        }
+        // Br
+        color("#7FFFD4") polyhedron(CubePoints, CubeFaces);
+    }
+    
+}
+
 // r:原子の半径
 // d:原子間距離
 r = 3;
 d = 20;
 
 // 単位格子の数を指定(０や負の値を入れるとバグる)
-x = 1;
-y = 1;
-z = 1;
+x = 4;
+y = 4;
+z = 4;
 
 for(i=[0:x-1]){
     for(j=[0:y-1]){
         for(k=[0:z-1]){
-            translate([d*i,d*j,d*k]) perovskite2(r,d);
+            translate([d*i,d*j,d*k]) perovskite3(r,d);
         }
     }
 }
